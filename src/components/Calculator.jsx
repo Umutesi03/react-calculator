@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { evaluate } from 'mathjs';
 
 export default function Calculator() {
   const [input1, setInput1] = useState('');
@@ -28,32 +29,24 @@ export default function Calculator() {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const num1 = Number(input1);
-    const num2 = Number(input2);
-    let res = 0;
+    const operators = {
+      add: '+',
+      subtract: '-',
+      multiply: '*',
+      divide: '/',
+    };
 
-    switch (operation) {
-      case 'add':
-        res = num1 + num2;
-        break;
-      case 'subtract':
-        res = num1 - num2;
-        break;
-      case 'multiply':
-        res = num1 * num2;
-        break;
-      case 'divide':
-        res = num1 / num2;
-        break;
-      default:
-        res = 0;
+    const op = operators[operation];
+    const expression = `${input1} ${op} ${input2}`;
+
+    try {
+      const res = evaluate(expression);
+      setResult(res);
+      setInput1('');
+      setInput2('');
+    } catch (err) {
+      setError('Error evaluating expression');
     }
-
-    setResult(res);
-
-    setInput1('');
-    setInput2('');
-    
   };
 
   useEffect(() => {
@@ -63,7 +56,7 @@ export default function Calculator() {
   }, [result]);
 
   return (
-    <div className="max-w-md mx-auto p-12 shadow-2xl rounded-lg shadow-md mt-10">
+    <div className="max-w-md mx-auto p-12 shadow-2xl rounded-lg shadow-md mt-10 bg-gray-50">
       <h1 className="text-2xl font-bold mb-4 text-center">React Calculator</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
