@@ -63,7 +63,7 @@ export default function Calculator() {
   }, [result]);
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+    <div className="max-w-md mx-auto p-12 shadow-2xl rounded-lg shadow-md mt-10">
       <h1 className="text-2xl font-bold mb-4 text-center">React Calculator</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
